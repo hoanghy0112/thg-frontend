@@ -22,7 +22,7 @@ export function Sidebar() {
 				</h1>
 				<ThemeSwitcher />
 			</div>
-			<div className=" mt-8 flex flex-col gap-4">
+			<div className=" mt-12 flex flex-col gap-2">
 				{PAGES.map(({ name, title }) => (
 					<SidebarItem key={name} name={name} title={title} />
 				))}

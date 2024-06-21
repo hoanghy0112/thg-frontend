@@ -20,7 +20,7 @@ export function SidebarItem({ name, title }: Props) {
 				onPress={() => router.push(name)}
 				className={isSelected ? " bg-foreground-200" : " bg-foreground-50"}
 			>
-				<p className=" mr-16 font-medium"> {title}</p>
+				<p className=" min-w-52 text-start font-medium"> {title}</p>
 			</Button>
 		</div>
 	);

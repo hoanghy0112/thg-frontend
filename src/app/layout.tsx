@@ -24,7 +24,7 @@ export default function RootLayout({
 					<NextThemesProvider attribute="class" defaultTheme="dark">
 						<div className=" w-screen h-screen flex bg-background">
 							<Sidebar />
-							<div> {children}</div>
+							<div className=" flex-1 px-4 py-8 overflow-auto"> {children}</div>
 						</div>
 					</NextThemesProvider>
 				</NextUIProvider>
