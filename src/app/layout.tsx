@@ -1,4 +1,3 @@
-import { Sidebar } from "@/components/side-bar";
 import { NextUIProvider } from "@nextui-org/react";
 import type { Metadata } from "next";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -22,10 +21,7 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<NextUIProvider>
 					<NextThemesProvider attribute="class" defaultTheme="dark">
-						<div className=" w-screen h-screen flex bg-background">
-							<Sidebar />
-							<div className=" flex-1 px-4 py-8 overflow-auto"> {children}</div>
-						</div>
+						{children}
 					</NextThemesProvider>
 				</NextUIProvider>
 			</body>
