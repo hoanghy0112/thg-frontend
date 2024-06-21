@@ -19,50 +19,27 @@ export const db = getFirestore(app);
 export async function saveFolderInformation({
 	folderName,
 	user,
-	parentFolderName,
+	folders,
 	options,
 }: {
 	folderName: string;
 	user: User;
-	parentFolderName?: string;
+	folders: string[];
 	options?: {
 		color: string;
 		icon: string;
 	};
 }) {
-	if (!parentFolderName) {
-		const folderId = v4();
-		await setDoc(doc(db, "users", user.uid, "folders", folderId), {
-			name: folderName,
-			parent: "",
-			...(options || {
-				color: "default",
-				icon: "default",
-			}),
-		});
-	} else {
-		const parentDocs = await getDocs(
-			query(
-				collection(db, "users", user.uid, "folders"),
-				where("name", "==", parentFolderName)
-			)
-		);
-		if (!parentDocs.docs.length) {
-			throw new Error("Parent folder not found");
-		}
-
-		const parentFolderId = parentDocs.docs[0];
-
-		const folderId = v4();
-		await setDoc(doc(db, "users", user.uid, "folders", folderId), {
-			name: folderName,
-			parent: parentFolderId,
-			...(options || {
-				color: "default",
-				icon: "default",
-			}),
-		});
-	}
+	const folderLink = joinFolder(folders);
+	const folderId = v4();
+	await setDoc(doc(db, "users", user.uid, "folders", folderId), {
+		name: folderName,
+		parent: folderLink,
+		...(options || {
+			color: "default",
+			icon: "default",
+		}),
+	});
 }
 
 export async function saveFileInformation(
