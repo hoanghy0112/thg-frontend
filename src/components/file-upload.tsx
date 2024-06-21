@@ -3,15 +3,14 @@ import { uploadFile } from "@/lib/core/uploadFile";
 import {
 	Button,
 	Dropdown,
-	DropdownTrigger,
-	DropdownMenu,
 	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
 } from "@nextui-org/react";
 import { ChangeEventHandler, useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoAddOutline, IoDocumentText, IoFolderOpen } from "react-icons/io5";
 import UserProfile from "./user-profile";
-import { FaFileCirclePlus, FaFolderPlus } from "react-icons/fa6";
 
 export default function FileUpload() {
 	const user = useUser();
@@ -45,7 +44,7 @@ export default function FileUpload() {
 			}
 
 			files.forEach((file) => {
-				toast.promise(uploadFile(file, [], user), {
+				toast.promise(uploadFile(file, "", user), {
 					loading: (
 						<p>
 							Uploading{" "}
