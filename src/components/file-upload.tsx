@@ -6,10 +6,12 @@ import {
 	DropdownItem,
 	DropdownMenu,
 	DropdownTrigger,
+	useDisclosure
 } from "@nextui-org/react";
 import { ChangeEventHandler, useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoAddOutline, IoDocumentText, IoFolderOpen } from "react-icons/io5";
+import AddFolder from "./add-folder";
 import UserProfile from "./user-profile";
 
 export default function FileUpload() {
@@ -18,6 +20,8 @@ export default function FileUpload() {
 	const [files, setFiles] = useState<File[]>([]);
 
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 	const handleAddFile = useCallback(() => {
 		inputRef?.current?.click();
@@ -111,7 +115,7 @@ export default function FileUpload() {
 						<p className=" text-foreground-900 font-semibold">New file</p>
 					</DropdownItem>
 					<DropdownItem
-						onPress={handleAddFile}
+						onPress={onOpen}
 						key="new-folder"
 						startContent={
 							<IoFolderOpen className=" text-foreground-900" size={20} />
@@ -123,6 +127,7 @@ export default function FileUpload() {
 					</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
+			<AddFolder isOpen={isOpen} onOpenChange={onOpenChange} />
 		</div>
 	);
 }
