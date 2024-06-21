@@ -1,12 +1,13 @@
 "use client";
 
 import FONT from "@/constants/fontFamily";
+import { signOut } from "@/lib/firebase/auth";
+import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
+import FileUpload from "./file-upload";
 import { SidebarItem } from "./side-bar-item";
 import ThemeSwitcher from "./theme-switcher";
-import { Button } from "@nextui-org/react";
-import { signOut } from "@/lib/firebase/auth";
-import { useRouter } from "next/navigation";
 
 export function Sidebar() {
 	const router = useRouter();
@@ -28,6 +29,9 @@ export function Sidebar() {
 					THG
 				</h1>
 				<ThemeSwitcher />
+			</div>
+			<div className=" mt-12">
+				<FileUpload />
 			</div>
 			<div className=" flex-1 mt-12 flex flex-col justify-between">
 				<div className=" flex flex-col gap-2">
