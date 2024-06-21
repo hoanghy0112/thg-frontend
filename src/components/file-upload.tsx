@@ -37,7 +37,7 @@ export default function FileUpload() {
 			}
 
 			files.forEach((file) => {
-				toast.promise(uploadFile(file, ["main"], user), {
+				toast.promise(uploadFile(file, [], user), {
 					loading: (
 						<p>
 							Uploading{" "}
