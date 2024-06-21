@@ -1,5 +1,7 @@
+import { Sidebar } from "@/components/side-bar";
 import { NextUIProvider } from "@nextui-org/react";
 import type { Metadata } from "next";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -18,7 +20,14 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<NextUIProvider>{children}</NextUIProvider>
+				<NextUIProvider>
+					<NextThemesProvider attribute="class" defaultTheme="dark">
+						<div className=" w-screen h-screen flex bg-background">
+							<Sidebar />
+							<div> {children}</div>
+						</div>
+					</NextThemesProvider>
+				</NextUIProvider>
 			</body>
 		</html>
 	);
