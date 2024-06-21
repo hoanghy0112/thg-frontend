@@ -1,9 +1,17 @@
 import { useUser } from "@/hooks/useUser";
 import { uploadFile } from "@/lib/core/uploadFile";
-import { Button } from "@nextui-org/react";
+import {
+	Button,
+	Dropdown,
+	DropdownTrigger,
+	DropdownMenu,
+	DropdownItem,
+} from "@nextui-org/react";
 import { ChangeEventHandler, useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { IoAddOutline } from "react-icons/io5";
+import { IoAddOutline, IoDocumentText, IoFolderOpen } from "react-icons/io5";
+import UserProfile from "./user-profile";
+import { FaFileCirclePlus, FaFolderPlus } from "react-icons/fa6";
 
 export default function FileUpload() {
 	const user = useUser();
@@ -74,16 +82,48 @@ export default function FileUpload() {
 				className=" hidden"
 				onChange={handleFilesChange}
 			/>
-			<Button
-				onPress={handleAddFile}
-				type="submit"
-				className=" w-full bg-primary-200"
-			>
-				<div className=" w-full flex gap-2 items-center justify-start">
-					<IoAddOutline size={26} />
-					<p className=" font-semibold">Add file</p>
-				</div>
-			</Button>
+			<Dropdown placement="bottom-start" backdrop="blur">
+				<DropdownTrigger>
+					<Button type="submit" className=" w-full bg-primary-200">
+						<div className=" w-full flex gap-2 items-center justify-start">
+							<IoAddOutline size={26} />
+							<p className=" font-semibold">Add new item</p>
+						</div>
+					</Button>
+				</DropdownTrigger>
+				<DropdownMenu aria-label="Static Actions">
+					<DropdownItem
+						onPress={handleAddFile}
+						key="user-profile"
+						isReadOnly
+					>
+						<UserProfile />
+					</DropdownItem>
+					<DropdownItem
+						onPress={handleAddFile}
+						key="new-file"
+						startContent={
+							<IoDocumentText
+								className=" text-foreground-900"
+								size={20}
+							/>
+						}
+					>
+						<p className=" text-foreground-900 font-semibold">New file</p>
+					</DropdownItem>
+					<DropdownItem
+						onPress={handleAddFile}
+						key="new-folder"
+						startContent={
+							<IoFolderOpen className=" text-foreground-900" size={20} />
+						}
+					>
+						<p className=" text-foreground-900 font-semibold">
+							New folder
+						</p>
+					</DropdownItem>
+				</DropdownMenu>
+			</Dropdown>
 		</div>
 	);
 }
