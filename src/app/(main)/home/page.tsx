@@ -11,7 +11,7 @@ export default function Page() {
 	useEffect(() => {
 		if (!user) return;
 
-		viewFolderList([]);
+		viewFolderList(user, "");
 		viewFileList(user, "");
 	}, [user]);
 
