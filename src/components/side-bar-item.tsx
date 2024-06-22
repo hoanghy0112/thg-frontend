@@ -14,13 +14,17 @@ export function SidebarItem({ name, title }: Props) {
 	const pathname = usePathname();
 	const router = useRouter();
 
-	const isSelected = pathname.split("/").at(1) === name;
+	const isSelected = pathname.split("/").at(1) === name.split("/").at(1);
 
 	return (
 		<div>
 			<Button
 				onPress={() => router.push(name)}
-				className={isSelected ? " bg-foreground-200" : " bg-foreground-50"}
+				className={twMerge(
+					isSelected
+						? " bg-foreground-300"
+						: " bg-foreground-50 hover:bg-foreground-200"
+				)}
 			>
 				<p
 					className={twMerge(
@@ -28,7 +32,6 @@ export function SidebarItem({ name, title }: Props) {
 						FONT.primary.className
 					)}
 				>
-					{" "}
 					{title}
 				</p>
 			</Button>

@@ -1,6 +1,7 @@
 import FONT from "@/constants/fontFamily";
+import { useUser } from "@/hooks/useUser";
+import { updateFile } from "@/lib/core/manage-file";
 import { AppFile } from "@/types/AppFile";
-import { Folder } from "@/types/Folder";
 import { getFileSizeString } from "@/utils/fileSize";
 import { timeDiff } from "@/utils/timeDiff";
 import {
@@ -14,15 +15,14 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import {
-	IoEllipsisVertical,
-	IoDocument,
-	IoCloudDownloadSharp,
+	IoCheckmarkDoneSharp,
 	IoCloudDownloadOutline,
-	IoTrashBinOutline,
+	IoDocument,
+	IoEllipsisVertical,
 	IoShareSocialOutline,
+	IoTrashBinOutline,
 } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 
@@ -40,6 +40,8 @@ export default function FileItem({
 	onPress?: (id: string) => any;
 	file: AppFile;
 }) {
+	const user = useUser();
+
 	const [isCopied, setIsCopied] = useState(false);
 
 	function download(dataurl: string, filename: string) {
@@ -49,16 +51,6 @@ export default function FileItem({
 		link.click();
 	}
 
-	useEffect(() => {
-		if (isCopied) {
-			const timeoutId = setTimeout(() => {
-				setIsCopied(false);
-			}, 1000);
-
-			return clearTimeout(timeoutId);
-		}
-	}, [isCopied]);
-
 	return (
 		<ButtonGroup variant="flat">
 			<Popover backdrop="blur">
@@ -66,7 +58,7 @@ export default function FileItem({
 					<Button
 						// onPress={() => onPress?.(id)}
 						className={twMerge(
-							" w-full bg-foreground-100 cursor-pointer hover:bg-foreground-200 duration-200"
+							" w-full bg-foreground-100 cursor-pointer hover:bg-foreground-200 transition-all duration-200"
 						)}
 					>
 						<div className=" w-full flex flex-row items-center gap-3 ">
@@ -83,7 +75,7 @@ export default function FileItem({
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent>
-					<div className=" p-4">
+					<div className=" p-4 min-w-[400px]">
 						<p
 							className={twMerge(
 								" text-foreground-500",
@@ -111,12 +103,32 @@ export default function FileItem({
 						<div className=" mt-5">
 							<Button
 								onPress={() => {
+									if (user) updateFile(user, id, { isSharable: true });
 									setIsCopied(true);
+									setTimeout(() => {
+										setIsCopied(false);
+									}, 2000);
 								}}
 								className=" w-full"
-								startContent={<IoShareSocialOutline size={18} />}
+								startContent={
+									isCopied ? (
+										<IoCheckmarkDoneSharp
+											className=" text-green-500"
+											size={18}
+										/>
+									) : (
+										<IoShareSocialOutline size={18} />
+									)
+								}
 							>
-								<p>Share file</p>
+								<p
+									className={twMerge(
+										" font-semibold",
+										FONT.primary.className
+									)}
+								>
+									{isCopied ? "Copied" : "Share file"}
+								</p>
 							</Button>
 						</div>
 					</div>
