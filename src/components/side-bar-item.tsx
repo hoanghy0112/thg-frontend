@@ -1,7 +1,9 @@
 "use client";
 
+import FONT from "@/constants/fontFamily";
 import { Button } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
 	name: string;
@@ -20,7 +22,15 @@ export function SidebarItem({ name, title }: Props) {
 				onPress={() => router.push(name)}
 				className={isSelected ? " bg-foreground-200" : " bg-foreground-50"}
 			>
-				<p className=" min-w-52 text-start font-medium"> {title}</p>
+				<p
+					className={twMerge(
+						" min-w-52 text-start font-medium",
+						FONT.primary.className
+					)}
+				>
+					{" "}
+					{title}
+				</p>
 			</Button>
 		</div>
 	);

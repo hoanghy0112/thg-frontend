@@ -1,4 +1,5 @@
 import FONT from "@/constants/fontFamily";
+import { AppFile } from "@/types/AppFile";
 import { Folder } from "@/types/Folder";
 import {
 	Button,
@@ -8,15 +9,21 @@ import {
 	DropdownMenu,
 	DropdownTrigger,
 } from "@nextui-org/react";
-import { IoEllipsisVertical, IoFolderOpenOutline } from "react-icons/io5";
+import {
+	IoEllipsisVertical,
+	IoDocument,
+	IoCloudDownloadSharp,
+	IoCloudDownloadOutline,
+	IoTrashBinOutline,
+} from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 
-export default function FolderItem({
+export default function FileItem({
 	onPress,
-	folder: { id, color, icon, name },
+	file: { id, name, location, type, size },
 }: {
 	onPress?: (id: string) => any;
-	folder: Folder;
+	file: AppFile;
 }) {
 	return (
 		<ButtonGroup variant="flat">
@@ -25,25 +32,12 @@ export default function FolderItem({
 				className={twMerge(
 					" w-full bg-foreground-100 cursor-pointer hover:bg-foreground-200 duration-200"
 				)}
-				style={color ? { backgroundColor: color } : {}}
 			>
 				<div className=" w-full flex flex-row items-center gap-3 ">
 					<div>
-						{icon !== "default" ? (
-							icon
-						) : (
-							<IoFolderOpenOutline
-								className=" text-foreground-900"
-								size={18}
-							/>
-						)}
+						<IoDocument className=" text-foreground-900" size={18} />
 					</div>
-					<p
-						className={twMerge(
-							" text-start flex-1 font-medium text-sm text-foreground-900",
-							FONT.primary.className
-						)}
-					>
+					<p className=" text-start flex-1 font-medium text-sm text-foreground-900">
 						{name}
 					</p>
 				</div>
@@ -59,11 +53,28 @@ export default function FolderItem({
 				</DropdownTrigger>
 				<DropdownMenu aria-label="Static Actions">
 					<DropdownItem
+						key="Download"
+						className=" text-foreground-900"
+						startContent={<IoCloudDownloadOutline size={18} />}
+					>
+						<p
+							className={twMerge(" font-medium", FONT.primary.className)}
+						>
+							Download
+						</p>
+					</DropdownItem>
+					<DropdownItem
 						key="delete"
 						className=" text-danger-500"
 						color="danger"
+						startContent={<IoTrashBinOutline size={18} />}
 					>
-						<p className=" font-medium"> Delete</p>
+						<p
+							className={twMerge(" font-medium", FONT.primary.className)}
+						>
+							{" "}
+							Delete
+						</p>
 					</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>

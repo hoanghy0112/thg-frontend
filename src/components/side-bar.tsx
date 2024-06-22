@@ -13,8 +13,8 @@ export function Sidebar() {
 	const router = useRouter();
 
 	const PAGES = [
-		{ name: "home", title: "Home page" },
-		{ name: "shared", title: "Shared files" },
+		{ name: "/home", title: "Home page" },
+		{ name: "/shared", title: "Shared files" },
 	];
 
 	return (

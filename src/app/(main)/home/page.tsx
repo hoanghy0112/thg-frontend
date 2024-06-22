@@ -3,10 +3,12 @@
 import FolderItem from "@/components/folder-item";
 import TitleText from "@/components/title-text";
 import { useFolderList } from "@/hooks/useFolderList";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+	const router = useRouter();
+
 	const folders = useFolderList();
-	console.log({ folders });
 
 	return (
 		<div className=" flex flex-col gap-6">
@@ -14,7 +16,13 @@ export default function Page() {
 				<TitleText className=" px-3">Folders</TitleText>
 				<div className=" grid grid-cols-2 xl:grid-cols-5 gap-4">
 					{folders.map((folder) => (
-						<FolderItem folder={folder} key={folder.id} />
+						<FolderItem
+							onPress={(id: string) => {
+								router.push(`/folders/${id}`);
+							}}
+							folder={folder}
+							key={folder.id}
+						/>
 					))}
 				</div>
 			</div>

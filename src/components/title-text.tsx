@@ -1,3 +1,4 @@
+import FONT from "@/constants/fontFamily";
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -9,7 +10,8 @@ export default function TitleText({
 		<p
 			className={twMerge(
 				" font-bold text-lg text-foreground-900",
-				className
+				className,
+				FONT.primary.className
 			)}
 		>
 			{children}

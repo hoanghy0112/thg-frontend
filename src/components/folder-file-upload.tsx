@@ -10,13 +10,16 @@ import {
 } from "@nextui-org/react";
 import { ChangeEventHandler, useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { IoAddOutline, IoDocumentText, IoFolderOpen } from "react-icons/io5";
+import {
+	IoAddOutline,
+	IoDocumentText,
+	IoFolderOpen,
+	IoCloudUploadOutline,
+} from "react-icons/io5";
 import AddFolder from "./add-folder";
 import UserProfile from "./user-profile";
-import { twMerge } from "tailwind-merge";
-import FONT from "@/constants/fontFamily";
 
-export default function FileUpload() {
+export default function FolderFileUpload({ folderId }: { folderId: string }) {
 	const user = useUser();
 
 	const [files, setFiles] = useState<File[]>([]);
@@ -50,7 +53,7 @@ export default function FileUpload() {
 			}
 
 			files.forEach((file) => {
-				toast.promise(uploadFile(file, "", user), {
+				toast.promise(uploadFile(file, folderId, user), {
 					loading: (
 						<p>
 							Uploading{" "}
@@ -90,27 +93,13 @@ export default function FileUpload() {
 			<Dropdown placement="bottom-start" backdrop="blur">
 				<DropdownTrigger>
 					<Button type="submit" className=" w-full bg-primary-200">
-						<div className=" w-full flex gap-2 items-center justify-start">
-							<IoAddOutline size={26} />
-							<p
-								className={twMerge(
-									" font-semibold",
-									FONT.primary.className
-								)}
-							>
-								Add new item
-							</p>
+						<div className=" w-full flex gap-3 items-center justify-start">
+							<IoCloudUploadOutline size={24} />
+							<p className=" font-semibold">Upload</p>
 						</div>
 					</Button>
 				</DropdownTrigger>
 				<DropdownMenu aria-label="Static Actions">
-					<DropdownItem
-						onPress={handleAddFile}
-						key="user-profile"
-						isReadOnly
-					>
-						<UserProfile />
-					</DropdownItem>
 					<DropdownItem
 						onPress={handleAddFile}
 						key="new-file"
@@ -136,7 +125,11 @@ export default function FileUpload() {
 					</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
-			<AddFolder isOpen={isOpen} onOpenChange={onOpenChange} />
+			<AddFolder
+				parentFolderId={folderId}
+				isOpen={isOpen}
+				onOpenChange={onOpenChange}
+			/>
 		</div>
 	);
 }
