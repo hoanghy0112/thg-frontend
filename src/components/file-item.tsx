@@ -30,6 +30,7 @@ import {
 } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 import PrivacyStatus from "./privacy-status";
+import Image from "next/image";
 
 export default function FileItem({
 	onPress,
@@ -59,7 +60,7 @@ export default function FileItem({
 
 	return (
 		<ButtonGroup variant="flat">
-			<Popover backdrop="blur">
+			<Popover backdrop="blur" placement={"top"}>
 				<PopoverTrigger>
 					<Button
 						className={twMerge(
@@ -80,10 +81,19 @@ export default function FileItem({
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent>
-					<div className=" p-4 min-w-[400px]">
+					<div className=" p-4 w-[400px]">
+						{type.split("/").at(0) === "image" ? (
+							<Image
+								className=" w-full h-[150px] object-cover"
+								src={location}
+								alt="preview image"
+								width={400}
+								height={150}
+							/>
+						) : null}
 						<p
 							className={twMerge(
-								" text-foreground-500",
+								" mt-2 text-foreground-500",
 								FONT.primary.className
 							)}
 						>{`Created ${timeDiff(new Date(seconds * 1000)).time} ${
@@ -91,7 +101,7 @@ export default function FileItem({
 						} ago`}</p>
 						<p
 							className={twMerge(
-								" mt-2 font-semibold text-lg text-foreground-900",
+								" w-full mt-1 font-semibold text-lg text-foreground-900",
 								FONT.primary.className
 							)}
 						>
@@ -99,7 +109,7 @@ export default function FileItem({
 						</p>
 						<p
 							className={twMerge(
-								" mt-1 text-foreground-600",
+								" mt-2 text-foreground-600",
 								FONT.primary.className
 							)}
 						>
