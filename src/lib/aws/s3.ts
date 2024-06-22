@@ -12,7 +12,8 @@ const s3 = new aws.S3();
 
 export async function uploadFileToS3(file: File) {
 	const id = uuidv4();
-	const name = id;
+	const ext = file.name.split(".").at(1);
+	const name = `${id}.${ext}`;
 
 	const s3ObjectRequest: PutObjectRequest = {
 		Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,

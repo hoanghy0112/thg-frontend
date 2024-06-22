@@ -4,15 +4,21 @@ import { useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import FileItem from "./file-item";
 
-export default function FileList({ files }: { files: AppFile[] }) {
+export default function FileList({
+	folderId,
+	files,
+}: {
+	folderId: string;
+	files: AppFile[];
+}) {
 	const router = useRouter();
 
 	return files.length ? (
-		<div className=" grid grid-cols-2 xl:grid-cols-5 gap-4">
+		<div className=" grid grid-cols-2 xl:grid-cols-3 gap-4">
 			{files.map((file) => (
 				<FileItem
 					onPress={(id: string) => {
-						router.push(`/files/${id}`);
+						router.push(`/folders/${folderId}/${id}`);
 					}}
 					file={file}
 					key={file.id}

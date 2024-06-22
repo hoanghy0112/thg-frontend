@@ -25,6 +25,13 @@ export default function FileItem({
 	onPress?: (id: string) => any;
 	file: AppFile;
 }) {
+	function download(dataurl: string, filename: string) {
+		const link = document.createElement("a");
+		link.href = dataurl;
+		link.download = filename;
+		link.click();
+	}
+
 	return (
 		<ButtonGroup variant="flat">
 			<Button
@@ -56,6 +63,9 @@ export default function FileItem({
 						key="Download"
 						className=" text-foreground-900"
 						startContent={<IoCloudDownloadOutline size={18} />}
+						onPress={() => {
+							download(location, name);
+						}}
 					>
 						<p
 							className={twMerge(" font-medium", FONT.primary.className)}
@@ -72,7 +82,6 @@ export default function FileItem({
 						<p
 							className={twMerge(" font-medium", FONT.primary.className)}
 						>
-							{" "}
 							Delete
 						</p>
 					</DropdownItem>

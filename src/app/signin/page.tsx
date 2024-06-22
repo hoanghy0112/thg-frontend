@@ -9,19 +9,21 @@ export default function Page() {
 
 	return (
 		<div className=" w-screen h-screen flex bg-background">
-			<div>
-				<p>Welcome to </p>
-				<p>THG File manager</p>
-			</div>
-			<div>
-				<p>Login</p>
+			<div className=" flex-1 flex flex-col gap-4 items-center justify-center">
+				<p className=" text-foreground-900 font-semibold text-xl">
+					Welcome to{" "}
+				</p>
+				<p className=" text-foreground-900 font-bold text-2xl">
+					THG File manager
+				</p>
 				<Button
+					className=" mt-4"
 					onPress={async () => {
 						await signInWithGoogle();
 						router.replace("/home");
 					}}
 				>
-					Sign in with Google
+					<p className=" font-semibold"> Sign in with Google</p>
 				</Button>
 			</div>
 		</div>
