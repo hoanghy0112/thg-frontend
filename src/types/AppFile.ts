@@ -6,6 +6,7 @@ export type AppFile = {
 	size: number;
 	type: string;
 	location: string;
+	isSharable: boolean;
 	createdAt: {
 		seconds: number;
 		nanoseconds: number;

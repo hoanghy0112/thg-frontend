@@ -48,6 +48,7 @@ export async function saveFileInformation(
 		key: data.Key,
 		bucket: data.Bucket,
 		folder: folderId,
+		isSharable: false,
 		createdAt: new Date(),
 	});
 }
