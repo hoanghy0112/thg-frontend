@@ -30,6 +30,7 @@ export default function AddFolder({
 
 	const handleAddFolder = useCallback(() => {
 		if (!user) return;
+		setName("");
 		const promise = saveFolderInformation({
 			folderName: name,
 			user,

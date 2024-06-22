@@ -1,4 +1,5 @@
 export type AppFile = {
+	id: string;
 	folder: string;
 	key: string;
 	name: string;

@@ -22,6 +22,7 @@ export async function saveFolderInformation({
 }) {
 	const id = v4();
 	await setDoc(doc(db, "users", user.uid, "folders", id), {
+		id,
 		name: folderName,
 		folder: folderId,
 		...(options || {
@@ -39,6 +40,7 @@ export async function saveFileInformation(
 ) {
 	const fileName = data.Key;
 	return await setDoc(doc(db, "users", user.uid, "files", fileName), {
+		id: fileName,
 		name: file.name,
 		size: file.size,
 		type: file.type,
