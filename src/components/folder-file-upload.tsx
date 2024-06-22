@@ -77,7 +77,7 @@ export default function FolderFileUpload({ folderId }: { folderId: string }) {
 				});
 			});
 		},
-		[user]
+		[folderId, user]
 	);
 
 	return (
