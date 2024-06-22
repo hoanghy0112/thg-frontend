@@ -1,5 +1,6 @@
 "use client";
 
+import { updateUser } from "@/lib/core/manage-user";
 import { signInWithGoogle } from "@/lib/firebase/auth";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,9 @@ export default function Page() {
 				<Button
 					className=" mt-4"
 					onPress={async () => {
-						await signInWithGoogle();
+						const user = await signInWithGoogle();
+						if (!user) return;
+						await updateUser(user);
 						router.replace("/home");
 					}}
 				>

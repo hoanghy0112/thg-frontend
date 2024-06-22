@@ -1,9 +1,7 @@
-import { useUser } from "@/hooks/useUser";
+import { User } from "firebase/auth";
 import Image from "next/image";
 
-export default function UserProfile() {
-	const user = useUser();
-
+export default function UserProfile({ user }: { user: User }) {
 	return (
 		<div className=" px-1 py-2 pb-4 flex flex-row gap-4 items-center">
 			<div className=" rounded-full bg-foreground-300 overflow-hidden w-10 h-10">

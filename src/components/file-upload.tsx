@@ -1,3 +1,4 @@
+import FONT from "@/constants/fontFamily";
 import { useUser } from "@/hooks/useUser";
 import { uploadFile } from "@/lib/core/uploadFile";
 import {
@@ -11,10 +12,9 @@ import {
 import { ChangeEventHandler, useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoAddOutline, IoDocumentText, IoFolderOpen } from "react-icons/io5";
+import { twMerge } from "tailwind-merge";
 import AddFolder from "./add-folder";
 import UserProfile from "./user-profile";
-import { twMerge } from "tailwind-merge";
-import FONT from "@/constants/fontFamily";
 
 export default function FileUpload() {
 	const user = useUser();
@@ -109,7 +109,7 @@ export default function FileUpload() {
 						key="user-profile"
 						isReadOnly
 					>
-						<UserProfile />
+						{user ? <UserProfile user={user} /> : null}
 					</DropdownItem>
 					<DropdownItem
 						onPress={handleAddFile}

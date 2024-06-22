@@ -16,7 +16,7 @@ export default function Layout({
 	return (
 		<div className=" w-screen h-screen flex bg-background">
 			<Sidebar />
-			<div className=" flex-1 px-4 py-8 overflow-auto"> {children}</div>
+			<div className=" flex-1 flex px-4 py-8 overflow-auto"> {children}</div>
 		</div>
 	);
 }

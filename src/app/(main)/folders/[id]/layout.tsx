@@ -25,7 +25,7 @@ export default function Layout({
 	const folders = useFolderList(id);
 
 	return (
-		<div>
+		<div className=" flex-1">
 			<BackButton onPress={() => router.back()} />
 			<div className=" mt-6 flex flex-row gap-6">
 				<div className=" mt-2 flex-1 transition-all duration-300">

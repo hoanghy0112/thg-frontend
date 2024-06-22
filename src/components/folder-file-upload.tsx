@@ -11,13 +11,11 @@ import {
 import { ChangeEventHandler, useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import {
-	IoAddOutline,
+	IoCloudUploadOutline,
 	IoDocumentText,
 	IoFolderOpen,
-	IoCloudUploadOutline,
 } from "react-icons/io5";
 import AddFolder from "./add-folder";
-import UserProfile from "./user-profile";
 
 export default function FolderFileUpload({ folderId }: { folderId: string }) {
 	const user = useUser();

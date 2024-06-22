@@ -1,6 +1,8 @@
 import FONT from "@/constants/fontFamily";
 import { useUser } from "@/hooks/useUser";
 import { updateFile } from "@/lib/core/manage-file";
+import { getFileShareLink } from "@/lib/core/manage-share";
+import { removeFile } from "@/lib/firebase/firestore";
 import { AppFile } from "@/types/AppFile";
 import { getFileSizeString } from "@/utils/fileSize";
 import { timeDiff } from "@/utils/timeDiff";
@@ -16,15 +18,18 @@ import {
 	PopoverTrigger,
 } from "@nextui-org/react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import {
 	IoCheckmarkDoneSharp,
 	IoCloudDownloadOutline,
 	IoDocument,
 	IoEllipsisVertical,
+	IoLockClosedOutline,
 	IoShareSocialOutline,
 	IoTrashBinOutline,
 } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
+import PrivacyStatus from "./privacy-status";
 
 export default function FileItem({
 	onPress,
@@ -34,6 +39,7 @@ export default function FileItem({
 		location,
 		type,
 		size,
+		isSharable,
 		createdAt: { seconds },
 	},
 }: {
@@ -56,7 +62,6 @@ export default function FileItem({
 			<Popover backdrop="blur">
 				<PopoverTrigger>
 					<Button
-						// onPress={() => onPress?.(id)}
 						className={twMerge(
 							" w-full bg-foreground-100 cursor-pointer hover:bg-foreground-200 transition-all duration-200"
 						)}
@@ -100,10 +105,18 @@ export default function FileItem({
 						>
 							{getFileSizeString(size)}
 						</p>
-						<div className=" mt-5">
+						<div className=" mt-5 flex flex-col gap-3">
+							<PrivacyStatus isPublic={isSharable} />
 							<Button
 								onPress={() => {
-									if (user) updateFile(user, id, { isSharable: true });
+									if (!user) {
+										toast.error("User data not found");
+										return;
+									}
+									updateFile(user, id, { isSharable: true });
+									navigator.clipboard.writeText(
+										getFileShareLink(id, user?.uid)
+									);
 									setIsCopied(true);
 									setTimeout(() => {
 										setIsCopied(false);
@@ -130,6 +143,33 @@ export default function FileItem({
 									{isCopied ? "Copied" : "Share file"}
 								</p>
 							</Button>
+							{isSharable ? (
+								<Button
+									onPress={() => {
+										if (!user) {
+											toast.error("User data not found");
+											return;
+										}
+										updateFile(user, id, { isSharable: false });
+									}}
+									className=" w-full"
+									startContent={
+										<IoLockClosedOutline
+											className=" text-red-500"
+											size={18}
+										/>
+									}
+								>
+									<p
+										className={twMerge(
+											" font-semibold text-red-500",
+											FONT.primary.className
+										)}
+									>
+										Make this file private
+									</p>
+								</Button>
+							) : null}
 						</div>
 					</div>
 				</PopoverContent>
@@ -159,6 +199,18 @@ export default function FileItem({
 						</p>
 					</DropdownItem>
 					<DropdownItem
+						onPress={() => {
+							if (!user) {
+								toast.error("User data not found");
+								return;
+							}
+							const promise = removeFile(id, user);
+							toast.promise(promise, {
+								loading: "Removing folder...",
+								success: "Remove folder successfully",
+								error: "Fail to remove folder",
+							});
+						}}
 						key="delete"
 						className=" text-danger-500"
 						color="danger"

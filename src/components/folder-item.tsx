@@ -1,4 +1,6 @@
 import FONT from "@/constants/fontFamily";
+import { useUser } from "@/hooks/useUser";
+import { removeFolder } from "@/lib/firebase/firestore";
 import { Folder } from "@/types/Folder";
 import {
 	Button,
@@ -8,6 +10,7 @@ import {
 	DropdownMenu,
 	DropdownTrigger,
 } from "@nextui-org/react";
+import toast from "react-hot-toast";
 import { IoEllipsisVertical, IoFolderOpenOutline } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 
@@ -18,6 +21,8 @@ export default function FolderItem({
 	onPress?: (id: string) => any;
 	folder: Folder;
 }) {
+	const user = useUser();
+
 	return (
 		<ButtonGroup variant="flat">
 			<Button
@@ -59,6 +64,18 @@ export default function FolderItem({
 				</DropdownTrigger>
 				<DropdownMenu aria-label="Static Actions">
 					<DropdownItem
+						onPress={() => {
+							if (!user) {
+								toast.error("User data not found");
+								return;
+							}
+							const promise = removeFolder(id, user);
+							toast.promise(promise, {
+								loading: "Removing folder...",
+								success: "Remove folder successfully",
+								error: "Fail to remove folder",
+							});
+						}}
 						key="delete"
 						className=" text-danger-500"
 						color="danger"

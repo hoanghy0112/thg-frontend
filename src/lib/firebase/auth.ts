@@ -25,8 +25,9 @@ export async function signInWithGoogle() {
 	const provider = new GoogleAuthProvider();
 
 	try {
-		await signInWithPopup(auth, provider);
+		const userCredential = await signInWithPopup(auth, provider);
 		setCookie("isSignin", true);
+		return userCredential.user;
 	} catch (error) {
 		console.error("Error signing in with Google", error);
 	}

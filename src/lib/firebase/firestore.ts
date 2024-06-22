@@ -1,6 +1,6 @@
 import { S3 } from "aws-sdk";
 import { User } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getFirestore, setDoc } from "firebase/firestore";
 import { v4 } from "uuid";
 import { app } from "./firebase-app";
 
@@ -38,9 +38,9 @@ export async function saveFileInformation(
 	folderId: string,
 	user: User
 ) {
-	const fileName = data.Key;
-	return await setDoc(doc(db, "users", user.uid, "files", fileName), {
-		id: fileName,
+	const fileId = data.Key.split(".").at(0) || "";
+	return await setDoc(doc(db, "users", user.uid, "files", fileId), {
+		id: fileId,
 		name: file.name,
 		size: file.size,
 		type: file.type,
@@ -51,4 +51,12 @@ export async function saveFileInformation(
 		isSharable: false,
 		createdAt: new Date(),
 	});
+}
+
+export async function removeFolder(id: string, user: User) {
+	return await deleteDoc(doc(db, "users", user.uid, "folders", id));
+}
+
+export async function removeFile(id: string, user: User) {
+	return await deleteDoc(doc(db, "users", user.uid, "files", id));
 }
