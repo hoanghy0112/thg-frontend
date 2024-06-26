@@ -20,9 +20,10 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
 	file: AppFile;
+	isDeletable?: boolean;
 };
 
-export default function FileDropDown({ file }: Props) {
+export default function FileDropDown({ file, isDeletable }: Props) {
 	const user = useUser();
 
 	return (
@@ -49,6 +50,8 @@ export default function FileDropDown({ file }: Props) {
 					</p>
 				</DropdownItem>
 				<DropdownItem
+					isReadOnly={!isDeletable}
+					style={{ display: isDeletable ? "block" : "none" }}
 					onPress={() => {
 						if (!user) {
 							toast.error("User data not found");

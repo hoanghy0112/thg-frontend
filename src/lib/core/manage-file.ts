@@ -32,3 +32,21 @@ export async function updateFile(
 
 	await setDoc(fileRef, data, { merge: true });
 }
+
+export async function touchFile(
+	ownerId: string,
+	userId: string,
+	fileId: string
+) {
+	const fileRef = doc(
+		db,
+		"users",
+		ownerId,
+		"files",
+		fileId,
+		"touches",
+		userId
+	);
+
+	await setDoc(fileRef, { userId, lastAccessAt: new Date() }, { merge: true });
+}

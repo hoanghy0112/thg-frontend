@@ -25,6 +25,7 @@ export async function saveFolderInformation({
 		id,
 		name: folderName,
 		folder: folderId,
+		userId: user.uid,
 		...(options || {
 			color: "default",
 			icon: "default",
@@ -50,6 +51,7 @@ export async function saveFileInformation(
 		folder: folderId,
 		isSharable: false,
 		createdAt: new Date(),
+		userId: user.uid,
 	});
 }
 
