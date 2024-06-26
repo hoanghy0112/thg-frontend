@@ -53,12 +53,12 @@ export default function FileDetailModalButton({ file }: { file: AppFile }) {
 					</p>
 				</div>
 			</Button>
-			<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+			<Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
 				<ModalContent>
 					<div className=" p-4 w-full">
 						{type.split("/").at(0) === "image" ? (
 							<Image
-								className=" w-full h-[150px] object-cover"
+								className=" rounded-xl overflow-hidden w-full h-[150px] object-cover"
 								src={location}
 								alt="preview image"
 								width={400}
@@ -67,7 +67,7 @@ export default function FileDetailModalButton({ file }: { file: AppFile }) {
 						) : null}
 						<p
 							className={twMerge(
-								" mt-2 text-foreground-400 text-sm",
+								" mt-4 text-foreground-400 text-sm",
 								FONT.primary.className
 							)}
 						>{`Created ${timeDiff(new Date(seconds * 1000)).time} ${
