@@ -7,8 +7,19 @@ export type AppFile = {
 	type: string;
 	location: string;
 	isSharable: boolean;
+	lastAccessAt: {
+		seconds: number;
+		nanoseconds: number;
+	};
 	createdAt: {
 		seconds: number;
 		nanoseconds: number;
 	};
+	touches: {
+		userId: string;
+		lastAccessAt: {
+			seconds: number;
+			nanoseconds: number;
+		};
+	}[];
 };

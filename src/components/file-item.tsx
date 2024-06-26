@@ -1,40 +1,23 @@
-import FONT from "@/constants/fontFamily";
 import { useUser } from "@/hooks/useUser";
-import { updateFile } from "@/lib/core/manage-file";
-import { getFileShareLink } from "@/lib/core/manage-share";
-import { removeFile } from "@/lib/firebase/firestore";
 import { AppFile } from "@/types/AppFile";
-import { getFileSizeString } from "@/utils/fileSize";
-import { timeDiff } from "@/utils/timeDiff";
 import {
 	Button,
 	ButtonGroup,
 	Dropdown,
-	DropdownItem,
-	DropdownMenu,
 	DropdownTrigger,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
 } from "@nextui-org/react";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import {
-	IoCheckmarkDoneSharp,
-	IoCloudDownloadOutline,
-	IoDocument,
-	IoEllipsisVertical,
-	IoLockClosedOutline,
-	IoShareSocialOutline,
-	IoTrashBinOutline,
-} from "react-icons/io5";
-import { twMerge } from "tailwind-merge";
-import PrivacyStatus from "./privacy-status";
-import Image from "next/image";
+import { IoEllipsisVertical } from "react-icons/io5";
+import FileDetailModalButton from "./file-detail-modal-button";
+import FileDropDown from "./file-dropdown";
 
 export default function FileItem({
 	onPress,
-	file: {
+	file,
+}: {
+	onPress?: (id: string) => any;
+	file: AppFile;
+}) {
+	const {
 		id,
 		name,
 		location,
@@ -42,198 +25,12 @@ export default function FileItem({
 		size,
 		isSharable,
 		createdAt: { seconds },
-	},
-}: {
-	onPress?: (id: string) => any;
-	file: AppFile;
-}) {
-	const user = useUser();
-
-	const [isCopied, setIsCopied] = useState(false);
-
-	function download(dataurl: string, filename: string) {
-		const link = document.createElement("a");
-		link.href = dataurl;
-		link.download = filename;
-		link.click();
-	}
+	} = file;
 
 	return (
 		<ButtonGroup variant="flat">
-			<Popover backdrop="blur" placement={"top"}>
-				<PopoverTrigger>
-					<Button
-						className={twMerge(
-							" w-full bg-foreground-100 cursor-pointer hover:bg-foreground-200 transition-all duration-200"
-						)}
-					>
-						<div className=" w-full flex flex-row items-center gap-3 ">
-							<div>
-								<IoDocument
-									className=" text-foreground-900"
-									size={18}
-								/>
-							</div>
-							<p className=" text-start flex-1 font-medium text-sm text-foreground-900">
-								{name}
-							</p>
-						</div>
-					</Button>
-				</PopoverTrigger>
-				<PopoverContent>
-					<div className=" p-4 w-[400px]">
-						{type.split("/").at(0) === "image" ? (
-							<Image
-								className=" w-full h-[150px] object-cover"
-								src={location}
-								alt="preview image"
-								width={400}
-								height={150}
-							/>
-						) : null}
-						<p
-							className={twMerge(
-								" mt-2 text-foreground-500",
-								FONT.primary.className
-							)}
-						>{`Created ${timeDiff(new Date(seconds * 1000)).time} ${
-							timeDiff(new Date(seconds * 1000)).type
-						} ago`}</p>
-						<p
-							className={twMerge(
-								" w-full mt-1 font-semibold text-lg text-foreground-900",
-								FONT.primary.className
-							)}
-						>
-							{name}
-						</p>
-						<p
-							className={twMerge(
-								" mt-2 text-foreground-600",
-								FONT.primary.className
-							)}
-						>
-							{getFileSizeString(size)}
-						</p>
-						<div className=" mt-5 flex flex-col gap-3">
-							<PrivacyStatus isPublic={isSharable} />
-							<Button
-								onPress={() => {
-									if (!user) {
-										toast.error("User data not found");
-										return;
-									}
-									updateFile(user, id, { isSharable: true });
-									navigator.clipboard.writeText(
-										getFileShareLink(id, user?.uid)
-									);
-									setIsCopied(true);
-									setTimeout(() => {
-										setIsCopied(false);
-									}, 2000);
-								}}
-								className=" w-full"
-								startContent={
-									isCopied ? (
-										<IoCheckmarkDoneSharp
-											className=" text-green-500"
-											size={18}
-										/>
-									) : (
-										<IoShareSocialOutline size={18} />
-									)
-								}
-							>
-								<p
-									className={twMerge(
-										" font-semibold",
-										FONT.primary.className
-									)}
-								>
-									{isCopied ? "Copied" : "Share file"}
-								</p>
-							</Button>
-							{isSharable ? (
-								<Button
-									onPress={() => {
-										if (!user) {
-											toast.error("User data not found");
-											return;
-										}
-										updateFile(user, id, { isSharable: false });
-									}}
-									className=" w-full"
-									startContent={
-										<IoLockClosedOutline
-											className=" text-red-500"
-											size={18}
-										/>
-									}
-								>
-									<p
-										className={twMerge(
-											" font-semibold text-red-500",
-											FONT.primary.className
-										)}
-									>
-										Make this file private
-									</p>
-								</Button>
-							) : null}
-						</div>
-					</div>
-				</PopoverContent>
-			</Popover>
-			<Dropdown placement="bottom-end">
-				<DropdownTrigger>
-					<Button
-						isIconOnly
-						className=" bg-foreground-100 hover:bg-foreground-200"
-					>
-						<IoEllipsisVertical size={15} />
-					</Button>
-				</DropdownTrigger>
-				<DropdownMenu aria-label="Static Actions">
-					<DropdownItem
-						key="Download"
-						className=" text-foreground-900"
-						startContent={<IoCloudDownloadOutline size={18} />}
-						onPress={() => {
-							download(location, name);
-						}}
-					>
-						<p
-							className={twMerge(" font-medium", FONT.primary.className)}
-						>
-							Download
-						</p>
-					</DropdownItem>
-					<DropdownItem
-						onPress={() => {
-							if (!user) {
-								toast.error("User data not found");
-								return;
-							}
-							const promise = removeFile(id, user);
-							toast.promise(promise, {
-								loading: "Removing folder...",
-								success: "Remove folder successfully",
-								error: "Fail to remove folder",
-							});
-						}}
-						key="delete"
-						className=" text-danger-500"
-						color="danger"
-						startContent={<IoTrashBinOutline size={18} />}
-					>
-						<p
-							className={twMerge(" font-medium", FONT.primary.className)}
-						>
-							Delete
-						</p>
-					</DropdownItem>
-				</DropdownMenu>
-			</Dropdown>
+			<FileDetailModalButton file={file} />
+			<FileDropDown file={file} />
 		</ButtonGroup>
 	);
 }

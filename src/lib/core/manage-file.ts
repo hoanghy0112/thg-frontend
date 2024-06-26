@@ -1,13 +1,14 @@
 import { AppFile } from "@/types/AppFile";
 import { User } from "firebase/auth";
 import {
-    collection,
-    doc,
-    DocumentData,
-    Query,
-    query,
-    setDoc,
-    where
+	collection,
+	doc,
+	DocumentData,
+	orderBy,
+	Query,
+	query,
+	setDoc,
+	where,
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 
@@ -17,7 +18,8 @@ export function viewFileList(
 ): Query<DocumentData, DocumentData> {
 	return query(
 		collection(db, "users", user.uid, "files"),
-		where("folder", "==", folderId)
+		where("folder", "==", folderId),
+		orderBy("createdAt", "desc")
 	);
 }
 
