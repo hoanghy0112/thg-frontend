@@ -30,7 +30,7 @@ export default function FileItem({
 	return (
 		<ButtonGroup variant="flat">
 			<FileDetailModalButton file={file} />
-			<FileDropDown file={file} />
+			<FileDropDown file={file} isEditable />
 		</ButtonGroup>
 	);
 }

@@ -52,7 +52,7 @@ export default function Page() {
 									{file?.name}
 								</h1>
 								{file ? (
-									<FileDropDown file={file} isDeletable={false} />
+									<FileDropDown file={file} isEditable={false} />
 								) : null}
 							</div>
 							<p

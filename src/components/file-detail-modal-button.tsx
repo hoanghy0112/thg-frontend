@@ -55,7 +55,7 @@ export default function FileDetailModalButton({ file }: { file: AppFile }) {
 			</Button>
 			<Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
 				<ModalContent>
-					<div className=" p-4 w-full">
+					<div className=" p-4 w-full flex flex-col">
 						{type.split("/").at(0) === "image" ? (
 							<Image
 								className=" rounded-xl overflow-hidden w-full h-[150px] object-cover"
@@ -73,17 +73,15 @@ export default function FileDetailModalButton({ file }: { file: AppFile }) {
 						>{`Created ${timeDiff(new Date(seconds * 1000)).time} ${
 							timeDiff(new Date(seconds * 1000)).type
 						} ago`}</p>
-						<div className=" flex justify-between">
-							<div>
-								<p
-									className={twMerge(
-										" w-full mt-1 font-semibold text-lg text-foreground-900",
-										FONT.primary.className
-									)}
-								>
-									{name}
-								</p>
-							</div>
+						<div className=" flex-1 flex flex-row justify-between">
+							<p
+								className={twMerge(
+									" flex-1 mt-1 text-ellipsis whitespace-pre-wrap text-wrap font-semibold text-lg text-foreground-900",
+									FONT.primary.className
+								)}
+							>
+								{name}
+							</p>
 							<div className="">
 								<FileDropDown file={file} />
 							</div>
