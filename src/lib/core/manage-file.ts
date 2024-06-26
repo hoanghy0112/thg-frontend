@@ -23,6 +23,15 @@ export function viewFileList(
 	);
 }
 
+export function viewSharedFileList(
+	user: User
+): Query<DocumentData, DocumentData> {
+	return query(
+		collection(db, "users", user.uid, "sharedFiles"),
+		orderBy("lastAccessAt", "desc")
+	);
+}
+
 export async function updateFile(
 	user: User,
 	fileId: string,
@@ -49,4 +58,10 @@ export async function touchFile(
 	);
 
 	await setDoc(fileRef, { userId, lastAccessAt: new Date() }, { merge: true });
+
+	await setDoc(
+		doc(db, "users", userId, "sharedFiles", fileId),
+		{ id: fileId, ownerId, lastAccessAt: new Date() },
+		{ merge: true }
+	);
 }

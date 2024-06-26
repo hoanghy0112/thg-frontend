@@ -91,11 +91,11 @@ export default function Page() {
 						<div className=" flex-1 flex">
 							{file?.type.split("/").at(0) === "image" ? (
 								<Image
-									className=" flex-1 object-cover"
+									className=" flex-1 flex object-cover"
 									src={file?.location}
 									alt="preview image"
-									width={1000}
-									height={1000}
+									width={800}
+									height={800}
 								/>
 							) : (
 								<div className=" bg-foreground-200 flex-1 flex flex-col justify-center items-center gap-2">

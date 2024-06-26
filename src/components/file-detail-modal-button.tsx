@@ -19,7 +19,13 @@ import { twMerge } from "tailwind-merge";
 import FileDropDown from "./file-dropdown";
 import PrivacyStatus from "./privacy-status";
 
-export default function FileDetailModalButton({ file }: { file: AppFile }) {
+export default function FileDetailModalButton({
+	file,
+	onPress,
+}: {
+	file: AppFile;
+	onPress?: () => any;
+}) {
 	const {
 		id,
 		name,
@@ -39,7 +45,7 @@ export default function FileDetailModalButton({ file }: { file: AppFile }) {
 	return (
 		<>
 			<Button
-				onPress={onOpen}
+				onPress={onPress || onOpen}
 				className={twMerge(
 					" w-full bg-foreground-100 cursor-pointer hover:bg-foreground-200 transition-all duration-200"
 				)}
@@ -73,7 +79,7 @@ export default function FileDetailModalButton({ file }: { file: AppFile }) {
 						>{`Created ${timeDiff(new Date(seconds * 1000)).time} ${
 							timeDiff(new Date(seconds * 1000)).type
 						} ago`}</p>
-						<div className=" flex-1 flex flex-row justify-between">
+						<div className=" flex-1 flex flex-row justify-between gap-2">
 							<p
 								className={twMerge(
 									" flex-1 mt-1 text-ellipsis whitespace-pre-wrap text-wrap font-semibold text-lg text-foreground-900",
